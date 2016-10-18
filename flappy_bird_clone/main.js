@@ -5,13 +5,13 @@ var mainState = {
         // That's where we load the images and sounds
 
         // Load the bird sprite
-        game.load.image('bird', 'assets/bird.png');
+        this.game.load.image('bird', 'assets/bird.png');
 
         // Load the pipe sprites
-        game.load.image('pipe', 'assets/pipe.png');
+        this.game.load.image('pipe', 'assets/pipe.png');
 
         // Load jump audio
-        game.load.audio('jump', 'assets/jump.wav');
+        this.game.load.audio('jump', 'assets/jump.wav');
     },
 
     create: function() {
@@ -19,41 +19,41 @@ var mainState = {
         // Here we set up the game, display sprites, etc.
 
         // Change the background color of the game to blue.
-        game.stage.backgroundColor = '#71c5cf';
+        this.game.stage.backgroundColor = '#71c5cf';
 
         // Set the physics system
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // Display the bird at the position x=100, y=245
-        this.bird = game.add.sprite(100, 245, 'bird');
+        this.bird = this.game.add.sprite(100, 245, 'bird');
 
         // Add physics to the bird
         // Needed for: Movment, gravity, collisions, etc.
-        game.physics.arcade.enable(this.bird);
+        this.game.physics.arcade.enable(this.bird);
 
         // Add gravity to the bird to make it fall
         this.bird.body.gravity.y = 1000;
 
         // Call the 'jump' function when the spacekey is hit.
-        var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         spaceKey.onDown.add(this.jump, this);
 
         // Create an empty groupo
-        this.pipes = game.add.group();
+        this.pipes = this.game.add.group();
 
         // Timer for adding rows of pipes every 1.5s
-        this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
+        this.timer = this.game.time.events.loop(1500, this.addRowOfPipes, this);
 
         // Scorer
         this.score = 0;
-        this.labelScore = game.add.text(20, 20, "0",
+        this.labelScore = this.game.add.text(20, 20, "0",
           {font: "30px Arial", fill: "#ffffff"});
 
         // Move the anchor to the left and downward
         this.bird.anchor.setTo(-0.2, 0.5);
 
         // Add the jump sound to the game.
-        this.jumpSound = game.add.audio('jump');
+        this.jumpSound = this.game.add.audio('jump');
 
     },
 
@@ -64,7 +64,7 @@ var mainState = {
           this.restartGame();
 
         // Restart the game if bird collides with a pipe.
-        game.physics.arcade.overlap(
+        this.game.physics.arcade.overlap(
           this.bird, this.pipes, this.hitPipe, null, this);
 
         // Make the bird rotate a little when jumping.
@@ -81,7 +81,7 @@ var mainState = {
       this.bird.body.velocity.y = -350;
 
       // Create an animation on the bird
-      var animation = game.add.tween(this.bird);
+      var animation = this.game.add.tween(this.bird);
 
       // Change the angle of hte bird to -20* in 100ms
       animation.to({angle:-20}, 100);
@@ -98,18 +98,18 @@ var mainState = {
 
     restartGame: function(){
       // Start the 'gameOver' state, which restarts the game.
-      game.state.start('gameOver', true, false, this.labelScore.text);
+      this.game.state.start('gameOver', true, false, this.labelScore.text);
     },
 
     addOnePipe: function(x,y){
       // Create a pipe at the position (x,y)
-      var pipe = game.add.sprite(x, y, 'pipe');
+      var pipe = this.game.add.sprite(x, y, 'pipe');
 
       // Add the pipe to our previously created group
       this.pipes.add(pipe);
 
       // Enable physics on the pipe.
-      game.physics.arcade.enable(pipe);
+      this.game.physics.arcade.enable(pipe);
 
       // Add velocity to the pipe to make it move left
       pipe.body.velocity.x = -200;
@@ -144,7 +144,7 @@ var mainState = {
       this.bird.alive = false;
 
       // Prevent new pipes from appearing.
-      game.time.events.remove(this.timer);
+      this.game.time.events.remove(this.timer);
 
       // Go through all the pipes, and stop their movement
       this.pipes.forEach(function(p){
@@ -153,59 +153,3 @@ var mainState = {
     },
 
 };
-
-var gameTitleState = {
-  create: function(){
-
-    game.stage.backgroundColor = '#71c5cf';
-
-    this.gameTitle = game.add.text(50,225, "Press Space to Start!",
-      {font: "30px Arial", fill: "#ffffff"});
-
-    // Listen on the space input to start the game.
-    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    spaceKey.onDown.add(this.startGame, this);
-  },
-
-  update: function(){
-
-  },
-
-  startGame: function(){
-    this.game.state.start("main");
-  },
-
-};
-
-var gameOverState = {
-  init: function(score){
-    this.gameScore = game.add.text(135, 150, "Score: " + score ,
-      {font: "30px Arial", fill: "#ffffff"});
-  },
-  
-  create: function(){
-    game.stage.backgroundColor = '#71c5cf';
-
-    this.gameTitle = game.add.text(35,275, "Press Space to try again!",
-      {font: "30px Arial", fill: "#ffffff"});
-
-    // Listen on the space input to start the game.
-    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    spaceKey.onDown.add(this.startGame, this);
-  },
-
-  startGame: function(){
-    this.game.state.start("main");
-  },
-};
-
-// Initialize Phaser, and create a 400px by 490px game
-var game = new Phaser.Game(400, 490);
-
-// Add the 'mainState' and call it 'main'
-game.state.add('main', mainState);
-game.state.add('gameTitle', gameTitleState);
-game.state.add('gameOver', gameOverState);
-
-// Start the state to actually start the game
-game.state.start('gameTitle');
