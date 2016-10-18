@@ -154,11 +154,36 @@ var mainState = {
 
 };
 
+var gameTitleState = {
+  create: function(){
+
+    game.stage.backgroundColor = '#71c5cf';
+
+    this.gameTitle = game.add.text(50,225, "Press Space to Start!",
+      {font: "30px Arial", fill: "#ffffff"});
+
+    // Listen on the space input to start the game.
+    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    spaceKey.onDown.add(this.startGame, this);
+  },
+
+  update: function(){
+
+  },
+
+  startGame: function(){
+    this.game.state.start("main");
+  },
+
+};
+
+
 // Initialize Phaser, and create a 400px by 490px game
 var game = new Phaser.Game(400, 490);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('main', mainState);
+game.state.add('gameTitle', gameTitleState);
 
 // Start the state to actually start the game
-game.state.start('main');
+game.state.start('gameTitle');
