@@ -97,8 +97,8 @@ var mainState = {
     },
 
     restartGame: function(){
-      // Start the 'main' state, which restarts the game.
-      game.state.start('main');
+      // Start the 'gameOver' state, which restarts the game.
+      game.state.start('gameOver', true, false, this.labelScore.text);
     },
 
     addOnePipe: function(x,y){
@@ -177,6 +177,27 @@ var gameTitleState = {
 
 };
 
+var gameOverState = {
+  init: function(score){
+    this.gameScore = game.add.text(135, 150, "Score: " + score ,
+      {font: "30px Arial", fill: "#ffffff"});
+  },
+  
+  create: function(){
+    game.stage.backgroundColor = '#71c5cf';
+
+    this.gameTitle = game.add.text(35,275, "Press Space to try again!",
+      {font: "30px Arial", fill: "#ffffff"});
+
+    // Listen on the space input to start the game.
+    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    spaceKey.onDown.add(this.startGame, this);
+  },
+
+  startGame: function(){
+    this.game.state.start("main");
+  },
+};
 
 // Initialize Phaser, and create a 400px by 490px game
 var game = new Phaser.Game(400, 490);
@@ -184,6 +205,7 @@ var game = new Phaser.Game(400, 490);
 // Add the 'mainState' and call it 'main'
 game.state.add('main', mainState);
 game.state.add('gameTitle', gameTitleState);
+game.state.add('gameOver', gameOverState);
 
 // Start the state to actually start the game
 game.state.start('gameTitle');
