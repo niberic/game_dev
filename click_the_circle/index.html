@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title> Click the Circle </title>
+        <script type="text/javascript" src="phaser.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="gameTitle.js"></script>
+        <script type="text/javascript" src="gameOver.js"></script>
+    </head>
+
+    <body>
+      <script type="text/javascript">
+        (function() {
+          // Initialize Phaser, and create a 400px by 490px game
+          var game = new Phaser.Game(400, 490);
+
+          // Add the 'mainState' and call it 'main'
+          game.state.add('main', mainState);
+          game.state.add('gameTitle', gameTitleState);
+          game.state.add('gameOver', gameOverState);
+
+          // Start the state to actually start the game
+          game.state.start('gameTitle');
+        })();
+      </script>
+
+    </body>
+</html>
