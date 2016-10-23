@@ -1,13 +1,22 @@
 var gameTitleState = {
+  preload: function() {
+      // This function will be executed at the beginning
+      // That's where we load the images and sounds
+
+      // Load the game sprite
+      this.game.load.image('startButton', 'assets/Start Button.png');
+  },
+
   create: function(){
-    this.game.stage.backgroundColor = '#71c5cf';
+    this.game.stage.backgroundColor = '#8cc0ff';
 
-    this.gameTitle = this.game.add.text(50,225, "Press Space to Start!",
-      {font: "30px Arial", fill: "#ffffff"});
+    // Add a start button and make it transition into the main state on click.
+    var image = this.game.add.sprite(this.game.world.centerX,
+      this.game.world.centerY, 'startButton');
+    image.anchor.set(0.5);
+    image.inputEnabled = true;
+    image.events.onInputDown.add(this.startGame, this);
 
-    // Listen on the space input to start the game.
-    var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    spaceKey.onDown.add(this.startGame, this);
   },
 
   startGame: function(){
