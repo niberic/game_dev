@@ -8,7 +8,7 @@ var gameTitleState = {
   },
 
   create: function(){
-    this.game.stage.backgroundColor = '#8cc0ff';
+    this.game.stage.backgroundColor = '#71c5cf';
 
     // Add a start button and make it transition into the main state on click.
     var image = this.game.add.sprite(this.game.world.centerX,
