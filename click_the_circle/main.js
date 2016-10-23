@@ -12,7 +12,7 @@ var mainState = {
         // This function is called after the preload function
         // Here we set up the game, display sprites, etc.
 
-        this.game.stage.backgroundColor = 'white';
+        this.game.stage.backgroundColor = '000000';
 
         // Scorer
         this.score = 0;
@@ -36,6 +36,9 @@ var mainState = {
     update: function() {
         // This function is called 60 times per second
         // It contains the game's logic
+        if(this.circles.length > 5){
+          this.game.state.start('gameOver', true, false, this.labelScore.text);
+        }
     },
 
     addCircle: function() {
