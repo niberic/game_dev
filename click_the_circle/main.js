@@ -21,16 +21,34 @@ var mainState = {
         this.labelScore = this.game.add.text(20, 20, "0",
           {font: "30px Arial", fill: "#ffffff"});
 
-        var image = this.game.add.sprite(this.game.world.centerX,
+        // Create an empty group
+        this.circles = this.game.add.group();
+
+        var circle = this.game.add.sprite(this.game.world.centerX,
           this.game.world.centerY, 'circle');
-        image.anchor.set(0.5);
-        image.inputEnabled = true;
-        image.events.onInputDown.add(this.addScore, this);
+        circle.anchor.set(0.5);
+        circle.inputEnabled = true;
+        circle.events.onInputDown.add(this.delCircle, this);
+        this.circles.add(circle);
+
+        // Timer for adding rows of pipes every 1.5s
+        this.timer = this.game.time.events.loop(1500, this.addCircle, this);
     },
 
     update: function() {
         // This function is called 60 times per second
         // It contains the game's logic
+    },
+
+    addCircle: function() {
+      var circle = this.game.add.sprite(50, 50, 'circle');
+      circle.inputEnabled = true;
+      circle.events.onInputDown.add(this.delCircle, this);
+    },
+
+    delCircle: function(){
+      this.addScore();
+      this.circles.remove(this);
     },
 
     addScore: function() {
