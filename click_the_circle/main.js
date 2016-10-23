@@ -47,9 +47,9 @@ var mainState = {
       this.circles.add(circle);
     },
 
-    delCircle: function(){
+    delCircle: function(circle){
       this.addScore();
-      // this.circles.destroy(true);
+      circle.destroy(true);
     },
 
     addScore: function() {
