@@ -1,6 +1,4 @@
 // Create our 'main' state that will contain the game
-
-
 var mainState = {
     preload: function() {
         // This function will be executed at the beginning
@@ -41,14 +39,17 @@ var mainState = {
     },
 
     addCircle: function() {
-      var circle = this.game.add.sprite(50, 50, 'circle');
+      var circle = this.game.add.sprite(0+getRandomNumber(350),
+                                        0+getRandomNumber(440),
+                                        'circle');
       circle.inputEnabled = true;
       circle.events.onInputDown.add(this.delCircle, this);
+      this.circles.add(circle);
     },
 
     delCircle: function(){
       this.addScore();
-      this.circles.remove(this);
+      // this.circles.destroy(true);
     },
 
     addScore: function() {
