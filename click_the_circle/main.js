@@ -41,10 +41,11 @@ var mainState = {
 
         // Gameover when there are more than 5 circles on screen.
         if(this.circles.length > 5){
-          this.game.state.start('gameOver', true, false, this.labelScore.text);
+          this.game.state.start('gameOver', true, false, this.labelScore.text,
+            this.game.input.activePointer.totalTouches);
         }
 
-        // Logic to decrease the delay for spawning circles everytime the plauer
+        // Logic to decrease the delay for spawning circles everytime the player
         // scores a multiple of 10 points.
         if(this.score != 0 && this.score % 10 == 0 && this.updateDelay == false){
           this.timer.delay = this.timer.delay - 100;
@@ -53,6 +54,10 @@ var mainState = {
         if(this.score % 10 == 1){
           this.updateDelay = false;
         }
+
+        // if (this.game.input.activePointer.isDown){
+        //   ++this.clicks;
+        // }
     },
 
     addCircle: function() {

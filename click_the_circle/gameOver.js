@@ -1,7 +1,14 @@
 var gameOverState = {
-  init: function(score){
-    this.gameScore = this.game.add.text(135, 150, "Score: " + score ,
+  init: function(score, clicks){
+    this.game.add.text(135, 150, "Score: " + score ,
       {font: "30px Arial", fill: "#ffffff"});
+
+    var accuracy = Math.round(score / clicks) * 100;
+    this.game.add.text(125, 200, "Accuracy: " + accuracy,
+      {font: "30px Arial", fill: "#ffffff"});
+
+    console.log("Score = " + score);
+    console.log("Clicks = " + clicks);
   },
 
   create: function(){
